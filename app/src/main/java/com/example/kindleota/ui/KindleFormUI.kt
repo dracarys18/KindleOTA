@@ -26,11 +26,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import androidx.navigation.NavController
 import com.example.kindleota.li
+import com.example.kindleota.navigation.Screens
 
 
 @Composable
-fun Kindleform() {
+fun AddDeviceScreen(navController: NavController) {
     var expanded by remember {
         mutableStateOf(false)
     }
@@ -44,7 +46,7 @@ fun Kindleform() {
         TopAppBar(
             title = { Text("Kindle Form") },
             navigationIcon = {
-                IconButton(onClick = {/*TODO*/ }) {
+                IconButton(onClick = { navController.navigate(Screens.HomeScreen.route) }) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
                         contentDescription = "Back",
@@ -80,11 +82,7 @@ fun Kindleform() {
                             icon,
                             contentDescription = "DropDown Menu",
                             Modifier.clickable {
-                                if (li.isNotEmpty()) expanded = true else Toast.makeText(
-                                    context,
-                                    "Loading Please wait",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                expanded = true
                             })
                     })
             }
@@ -92,12 +90,18 @@ fun Kindleform() {
                 expanded = expanded, onDismissRequest = { expanded = false }, Modifier
                     .width(with(LocalDensity.current) { textfieldSize.width.toDp() })
             ) {
-                li.forEach {
-                    DropdownMenuItem(onClick = {
-                        selectedtext = it
-                        expanded = false
-                    }) {
-                        Text(text = it)
+                if (li.isEmpty()) {
+                    DropdownMenuItem(onClick = { expanded = false }) {
+                        LinearProgressIndicator()
+                    }
+                } else {
+                    li.forEach {
+                        DropdownMenuItem(onClick = {
+                            selectedtext = it
+                            expanded = false
+                        }) {
+                            Text(text = it)
+                        }
                     }
                 }
             }
@@ -133,10 +137,10 @@ fun Kindleform() {
                     else
                         Toast.makeText(context, "Invalid Version Number", Toast.LENGTH_SHORT).show()
                 },
-                colors= ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondaryVariant),
+                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondaryVariant),
                 shape = RoundedCornerShape(50)
             ) {
-                Icon(Icons.Filled.Done, tint = Color.Black,contentDescription = "Done")
+                Icon(Icons.Filled.Done, tint = Color.Black, contentDescription = "Done")
             }
         }
     }
