@@ -124,16 +124,20 @@ fun Kindleform() {
             })
         )
         Spacer(modifier = Modifier.padding(10.dp))
-        OutlinedButton(
-            onClick = {
-                if (doesVersionMatch(versiontext))
-                    localFocusManager.clearFocus()
-                else
-                    Toast.makeText(context, "Invalid Version Number", Toast.LENGTH_SHORT).show()
-            },
-            shape = RoundedCornerShape(50)
-        ) {
-            Icon(Icons.Filled.Done, contentDescription = "Done")
+        Row {
+            Spacer(modifier = Modifier.weight(1f, true))
+            OutlinedButton(
+                onClick = {
+                    if (doesVersionMatch(versiontext))
+                        localFocusManager.clearFocus()
+                    else
+                        Toast.makeText(context, "Invalid Version Number", Toast.LENGTH_SHORT).show()
+                },
+                colors= ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondaryVariant),
+                shape = RoundedCornerShape(50)
+            ) {
+                Icon(Icons.Filled.Done, tint = Color.Black,contentDescription = "Done")
+            }
         }
     }
 }

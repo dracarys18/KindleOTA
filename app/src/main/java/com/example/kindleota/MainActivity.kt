@@ -12,6 +12,7 @@ import com.example.kindleota.data.ResponseDataItem
 import com.example.kindleota.retrofit.RetroService.createRetroInterface
 import com.example.kindleota.retrofit.RetroService.getRetrofit
 import com.example.kindleota.ui.Kindleform
+import com.example.kindleota.ui.addDevice
 import com.example.kindleota.ui.theme.KindleOTATheme
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,7 +28,7 @@ class MainActivity : ComponentActivity() {
             KindleOTATheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    Kindleform()
+                    addDevice()
                 }
             }
         }
@@ -52,7 +53,6 @@ private fun getKindleNames() {
         }
     })
 }
-
 
 @Preview(showBackground = true)
 @Composable
