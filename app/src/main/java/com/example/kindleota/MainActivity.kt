@@ -35,7 +35,6 @@ class MainActivity : ComponentActivity() {
 }
 
 private fun getKindleNames() {
-
     val retrodata = createRetroInterface(getRetrofit(BASE_URL)).getData()
     retrodata.enqueue(object : Callback<List<ResponseDataItem>?> {
         override fun onResponse(

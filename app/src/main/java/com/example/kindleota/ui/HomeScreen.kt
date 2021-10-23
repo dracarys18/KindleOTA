@@ -11,13 +11,13 @@ import com.example.kindleota.navigation.Screens
 fun HomeScreen(navhostController: NavController) {
     Scaffold(floatingActionButton = {
         ExtendedFloatingActionButton(
-            text = { Text(text = "Add A Device") },
+            text = { Text(text = "Add A Device", style = MaterialTheme.typography.button) },
             icon = { Icon(Icons.Filled.AddCircle, contentDescription = "Add Description") },
             onClick = {
                 navhostController.navigate(Screens.AddDeviceScreen.route)
             })
     }, floatingActionButtonPosition = FabPosition.Center) {
-        Text(text = "Empty Af")
+        KindleCards(name = "Kindle Oasis 10th Generation", version = "5.10.10")
     }
 
 }

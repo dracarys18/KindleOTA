@@ -45,7 +45,7 @@ fun AddDeviceScreen(navController: NavController) {
     val icon = if (expanded) Icons.Filled.ArrowDropUp else Icons.Filled.ArrowDropDown
     Column {
         TopAppBar(
-            title = { Text("Kindle Form") },
+            title = { Text("Add a new Device") },
             navigationIcon = {
                 IconButton(onClick = { navController.navigate(Screens.HomeScreen.route) }) {
                     Icon(
