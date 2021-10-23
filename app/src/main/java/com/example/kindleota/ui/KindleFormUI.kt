@@ -28,17 +28,24 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavController
+import com.example.kindleota.database.KindleData
+import com.example.kindleota.database.KindleDatabase
 import com.example.kindleota.li
 import com.example.kindleota.navigation.Screens
 
 
 @Composable
 fun AddDeviceScreen(navController: NavController) {
+    val application = LocalContext.current
+    val dao = KindleDatabase.getInstance(application).kindledabaseDao
     var expanded by remember {
         mutableStateOf(false)
     }
     var selectedtext by remember {
         mutableStateOf("")
+    }
+    var selectedind: Int by remember {
+        mutableStateOf(0)
     }
     val context = LocalContext.current
     var textfieldSize by remember { mutableStateOf(Size.Zero) }
@@ -91,6 +98,7 @@ fun AddDeviceScreen(navController: NavController) {
                             })
                     })
             }
+
             DropdownMenu(
                 expanded = expanded, onDismissRequest = { expanded = false }, Modifier
                     .width(with(LocalDensity.current) { textfieldSize.width.toDp() })
@@ -100,12 +108,13 @@ fun AddDeviceScreen(navController: NavController) {
                         LinearProgressIndicator()
                     }
                 } else {
-                    li.forEach {
+                    li.forEachIndexed { index, s ->
                         DropdownMenuItem(onClick = {
-                            selectedtext = it
+                            selectedtext = s
+                            selectedind = index
                             expanded = false
                         }) {
-                            Text(text = it)
+                            Text(text = s)
                         }
                     }
                 }
@@ -137,10 +146,26 @@ fun AddDeviceScreen(navController: NavController) {
             Spacer(modifier = Modifier.weight(1f, true))
             OutlinedButton(
                 onClick = {
-                    if (doesVersionMatch(versiontext))
-                        localFocusManager.clearFocus()
-                    else
-                        Toast.makeText(context, "Invalid Version Number", Toast.LENGTH_SHORT).show()
+                    when {
+                        isProper(versiontext, selectedtext) -> {
+                            localFocusManager.clearFocus()
+                            val data = KindleData(selectedind, selectedtext, versiontext)
+                            dao.insertKindle(data)
+
+                        }
+                        selectedtext.isEmpty() -> Toast.makeText(
+                            context,
+                            "Please Select Any Kindle",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                        else -> Toast.makeText(
+                            context,
+                            "Please fill the version number properly",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondaryVariant),
                 shape = RoundedCornerShape(50)
@@ -151,7 +176,7 @@ fun AddDeviceScreen(navController: NavController) {
     }
 }
 
-fun doesVersionMatch(ch: CharSequence): Boolean {
+fun isProper(version: CharSequence, text: String): Boolean {
     val pattern = Regex("\\d+(\\.\\d+)+")
-    return pattern.matches(ch)
+    return pattern.matches(version) && text.isNotEmpty()
 }
