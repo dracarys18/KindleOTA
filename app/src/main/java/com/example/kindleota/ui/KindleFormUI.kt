@@ -2,6 +2,7 @@ package com.example.kindleota.ui
 
 import android.widget.Toast
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -63,7 +64,11 @@ fun AddDeviceScreen(navController: NavController) {
                     MaterialTheme.colors.primary
                 }
 
-            ProvideTextStyle(value = TextStyle(color = Color.White)) {
+            ProvideTextStyle(
+                value = if (isSystemInDarkTheme()) TextStyle(color = Color.White) else TextStyle(
+                    color = Color.Black
+                )
+            ) {
                 OutlinedTextField(value = selectedtext,
                     onValueChange = {
                         selectedtext = it
