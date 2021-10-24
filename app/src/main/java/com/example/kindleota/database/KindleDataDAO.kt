@@ -8,8 +8,8 @@ interface KindleDataDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertKindle(kindle: KindleData)
 
-    @Delete
-    fun deleteKindle(kindle: KindleData)
+    @Query("DELETE FROM kindle_data where kindle_name=:name")
+    fun deleteKindle(name: String)
 
     @Query("SELECT * FROM kindle_data")
     fun getallKindles(): Array<KindleData>

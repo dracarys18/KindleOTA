@@ -22,7 +22,7 @@ fun HomeScreen(navhostController: NavController) {
                 navhostController.navigate(Screens.AddDeviceScreen.route)
             })
     }, floatingActionButtonPosition = FabPosition.Center) {
-        var kindles: Array<KindleData> = dao.getallKindles()
+        val kindles: Array<KindleData> = dao.getallKindles()
         if (kindles.isEmpty()) {
             Text(text = "Nothing here")
         } else {
