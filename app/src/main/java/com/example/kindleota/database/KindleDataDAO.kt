@@ -1,7 +1,10 @@
 package com.example.kindleota.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
 @Dao
 interface KindleDataDAO {
@@ -12,7 +15,7 @@ interface KindleDataDAO {
     fun deleteKindle(name: String)
 
     @Query("SELECT * FROM kindle_data")
-    fun getallKindles(): Array<KindleData>
+    fun getallKindles(): List<KindleData>
 
     @Query("SELECT kindle_name from kindle_data where sno=:uno")
     fun getName(uno: Int): LiveData<String>

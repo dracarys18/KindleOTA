@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavController
 import com.example.kindleota.database.KindleData
 import com.example.kindleota.database.KindleDatabase
-import com.example.kindleota.li
+import com.example.kindleota.namelist
 import com.example.kindleota.navigation.Screens
 
 
@@ -103,12 +103,12 @@ fun AddDeviceScreen(navController: NavController) {
                 expanded = expanded, onDismissRequest = { expanded = false }, Modifier
                     .width(with(LocalDensity.current) { textfieldSize.width.toDp() })
             ) {
-                if (li.isEmpty()) {
+                if (namelist.value.isEmpty()) {
                     DropdownMenuItem(onClick = { expanded = false }) {
                         LinearProgressIndicator()
                     }
                 } else {
-                    li.forEachIndexed { index, s ->
+                    namelist.value.forEachIndexed { index, s ->
                         DropdownMenuItem(onClick = {
                             selectedtext = s
                             selectedind = index
@@ -151,7 +151,7 @@ fun AddDeviceScreen(navController: NavController) {
                             localFocusManager.clearFocus()
                             val data = KindleData(selectedind, selectedtext, versiontext)
                             dao.insertKindle(data)
-
+                            navController.navigate(Screens.HomeScreen.route)
                         }
                         selectedtext.isEmpty() -> Toast.makeText(
                             context,

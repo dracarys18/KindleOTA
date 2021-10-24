@@ -7,6 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.kindleota.data.ResponseDataItem
 import com.example.kindleota.navigation.Navigation
@@ -17,7 +19,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-val li = mutableListOf<String>()
+val namelist: MutableState<List<String>> = mutableStateOf(listOf())
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +37,7 @@ class MainActivity : ComponentActivity() {
 }
 
 private fun getKindleNames() {
+    val names = mutableListOf<String>()
     val retrodata = createRetroInterface(getRetrofit(BASE_URL)).getData()
     retrodata.enqueue(object : Callback<List<ResponseDataItem>?> {
         override fun onResponse(
@@ -42,9 +45,10 @@ private fun getKindleNames() {
             response: Response<List<ResponseDataItem>?>
         ) {
             val reponsebody = response.body()!!
-            for (i in reponsebody) {
-                li.add(i.name)
+            reponsebody.forEach {
+                names.add(it.name)
             }
+            namelist.value = names
         }
 
         override fun onFailure(call: Call<List<ResponseDataItem>?>, t: Throwable) {
