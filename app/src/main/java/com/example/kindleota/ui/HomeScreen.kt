@@ -1,5 +1,7 @@
 package com.example.kindleota.ui
 
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
@@ -26,8 +28,11 @@ fun HomeScreen(navhostController: NavController) {
         if (kindles.isEmpty()) {
             Text(text = "Nothing here")
         } else {
-            kindles.forEach {
-                KindleCards(name = it.kindleName!!, version = it.version!!)
+            LazyColumn {
+                items(items = kindles) { kindle ->
+                    KindleCards(name = kindle.kindleName!!, version = kindle.version!!)
+                }
+
             }
         }
     }
