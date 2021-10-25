@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -19,6 +19,40 @@ import kotlinx.coroutines.launch
 fun KindleCards(name: String, version: String) {
     val application = LocalContext.current
     val dao = KindleDatabase.getInstance(application).kindledabaseDao
+    var confirmpressed by remember {
+        mutableStateOf(false)
+    }
+    if (confirmpressed) {
+        AlertDialog(
+            onDismissRequest = {
+                confirmpressed = false
+            },
+            confirmButton = {
+                Button(onClick = {
+                    confirmpressed = false
+                    val scope = CoroutineScope(Job() + Dispatchers.IO)
+                    scope.launch {
+                        dao.deleteKindle(name)
+                    }
+                }) {
+                    Text(text = "Confirm")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    confirmpressed = false
+                }) {
+                    Text(text = "Cancel")
+                }
+            },
+            title = {
+                Text(text = "Do you wanna stop tracking $name")
+            },
+            text = {
+                Text("Pleas press confirm to stop tracking")
+            },
+        )
+    }
     Card(
         shape = MaterialTheme.shapes.small,
         elevation = 10.dp, modifier = Modifier
@@ -44,12 +78,7 @@ fun KindleCards(name: String, version: String) {
             ) {
                 Spacer(modifier = Modifier.weight(1f, true))
                 IconButton(
-                    onClick = {
-                        val scope = CoroutineScope(Job() + Dispatchers.IO)
-                        scope.launch {
-                            dao.deleteKindle(name)
-                        }
-                    }
+                    onClick = { confirmpressed = true }
                 ) {
                     Icon(Icons.Rounded.Delete, contentDescription = "Delete the Entry")
                 }
