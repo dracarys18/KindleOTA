@@ -22,7 +22,7 @@ abstract class KindleDatabase : RoomDatabase() {
                         context.applicationContext,
                         KindleDatabase::class.java,
                         "kindle_database"
-                    ).allowMainThreadQueries()
+                    )
                         .fallbackToDestructiveMigration()
                         .build()
                     INSTANCE = instance

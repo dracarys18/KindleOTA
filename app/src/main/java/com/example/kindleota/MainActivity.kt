@@ -15,6 +15,10 @@ import com.example.kindleota.navigation.Navigation
 import com.example.kindleota.retrofit.RetroService.createRetroInterface
 import com.example.kindleota.retrofit.RetroService.getRetrofit
 import com.example.kindleota.ui.theme.KindleOTATheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,7 +28,10 @@ val namelist: MutableState<List<String>> = mutableStateOf(listOf())
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getKindleNames()
+        val scope = CoroutineScope(Job() + Dispatchers.IO)
+        scope.launch {
+            getKindleNames()
+        }
         setContent {
             KindleOTATheme {
                 // A surface container using the 'background' color from the theme
@@ -36,7 +43,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private fun getKindleNames() {
+private suspend fun getKindleNames() {
     val names = mutableListOf<String>()
     val retrodata = createRetroInterface(getRetrofit(BASE_URL)).getData()
     retrodata.enqueue(object : Callback<List<ResponseDataItem>?> {

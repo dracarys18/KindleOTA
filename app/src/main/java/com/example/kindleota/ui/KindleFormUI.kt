@@ -32,6 +32,10 @@ import com.example.kindleota.database.KindleData
 import com.example.kindleota.database.KindleDatabase
 import com.example.kindleota.namelist
 import com.example.kindleota.navigation.Screens
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -150,7 +154,10 @@ fun AddDeviceScreen(navController: NavController) {
                         isProper(versiontext, selectedtext) -> {
                             localFocusManager.clearFocus()
                             val data = KindleData(selectedind, selectedtext, versiontext)
-                            dao.insertKindle(data)
+                            val scope = CoroutineScope(Job() + Dispatchers.IO)
+                            scope.launch {
+                                dao.insertKindle(data)
+                            }
                             navController.navigate(Screens.HomeScreen.route)
                         }
                         selectedtext.isEmpty() -> Toast.makeText(

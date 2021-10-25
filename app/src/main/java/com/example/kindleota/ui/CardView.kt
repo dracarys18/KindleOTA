@@ -10,6 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.kindleota.database.KindleDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 @Composable
 fun KindleCards(name: String, version: String) {
@@ -41,7 +45,10 @@ fun KindleCards(name: String, version: String) {
                 Spacer(modifier = Modifier.weight(1f, true))
                 IconButton(
                     onClick = {
-                        dao.deleteKindle(name)
+                        val scope = CoroutineScope(Job() + Dispatchers.IO)
+                        scope.launch {
+                            dao.deleteKindle(name)
+                        }
                     }
                 ) {
                     Icon(Icons.Rounded.Delete, contentDescription = "Delete the Entry")

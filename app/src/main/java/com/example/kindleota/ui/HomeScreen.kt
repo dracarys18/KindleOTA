@@ -5,12 +5,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.example.kindleota.database.KindleData
 import com.example.kindleota.database.KindleDatabase
 import com.example.kindleota.navigation.Screens
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(navhostController: NavController) {
@@ -24,7 +28,11 @@ fun HomeScreen(navhostController: NavController) {
                 navhostController.navigate(Screens.AddDeviceScreen.route)
             })
     }, floatingActionButtonPosition = FabPosition.Center) {
-        val kindles: List<KindleData> = dao.getallKindles()
+        var kindles: List<KindleData> by remember { mutableStateOf(listOf()) }
+        val scope = CoroutineScope(Job() + Dispatchers.IO)
+        scope.launch {
+            kindles = dao.getallKindles()
+        }
         if (kindles.isEmpty()) {
             Text(text = "Nothing here")
         } else {
