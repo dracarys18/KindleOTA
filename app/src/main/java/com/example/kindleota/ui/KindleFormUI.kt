@@ -114,11 +114,11 @@ fun AddDeviceScreen(navController: NavController) {
                 } else {
                     namelist.value.forEachIndexed { index, s ->
                         DropdownMenuItem(onClick = {
-                            selectedtext = s
+                            selectedtext = s.name
                             selectedind = index
                             expanded = false
                         }) {
-                            Text(text = s)
+                            Text(text = s.name)
                         }
                     }
                 }

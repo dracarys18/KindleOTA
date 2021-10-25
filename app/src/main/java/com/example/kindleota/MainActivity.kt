@@ -23,14 +23,14 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-val namelist: MutableState<List<String>> = mutableStateOf(listOf())
+val namelist: MutableState<List<ResponseDataItem>> = mutableStateOf(listOf())
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val scope = CoroutineScope(Job() + Dispatchers.IO)
         scope.launch {
-            getKindleNames()
+            getKindleData()
         }
         setContent {
             KindleOTATheme {
@@ -43,19 +43,14 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private suspend fun getKindleNames() {
-    val names = mutableListOf<String>()
+private suspend fun getKindleData() {
     val retrodata = createRetroInterface(getRetrofit(BASE_URL)).getData()
     retrodata.enqueue(object : Callback<List<ResponseDataItem>?> {
         override fun onResponse(
             call: Call<List<ResponseDataItem>?>,
             response: Response<List<ResponseDataItem>?>
         ) {
-            val reponsebody = response.body()!!
-            reponsebody.forEach {
-                names.add(it.name)
-            }
-            namelist.value = names
+            namelist.value = response.body()!!
         }
 
         override fun onFailure(call: Call<List<ResponseDataItem>?>, t: Throwable) {

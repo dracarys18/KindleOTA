@@ -1,6 +1,5 @@
 package com.example.kindleota.retrofit
 
-import com.example.kindleota.ApiInterface
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

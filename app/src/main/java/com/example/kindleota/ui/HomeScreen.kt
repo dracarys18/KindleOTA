@@ -1,5 +1,6 @@
 package com.example.kindleota.ui
 
+import android.widget.Toast
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -10,6 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.example.kindleota.database.KindleData
 import com.example.kindleota.database.KindleDatabase
+import com.example.kindleota.namelist
 import com.example.kindleota.navigation.Screens
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,7 +40,17 @@ fun HomeScreen(navhostController: NavController) {
         } else {
             LazyColumn {
                 items(items = kindles) { kindle ->
-                    KindleCards(name = kindle.kindleName!!, version = kindle.version!!)
+                    val latest = namelist.value.find { it.name == kindle.kindleName!! }
+                    if (latest != null) {
+                        KindleCards(
+                            name = kindle.kindleName!!,
+                            version = kindle.version!!,
+                            latest_version = latest.version
+                        )
+                    } else {
+                        Toast.makeText(application, "Loading Please Wait", Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
 
             }

@@ -16,7 +16,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @Composable
-fun KindleCards(name: String, version: String) {
+fun KindleCards(name: String, version: String, latest_version: String) {
     val application = LocalContext.current
     val dao = KindleDatabase.getInstance(application).kindledabaseDao
     var confirmpressed by remember {
@@ -65,13 +65,21 @@ fun KindleCards(name: String, version: String) {
                 text = "Kindle Name",
                 modifier = Modifier.padding(start = 15.dp, top = 15.dp),
             )
+            Spacer(modifier = Modifier.padding(5.dp))
             Text(text = name, modifier = Modifier.padding(start = 20.dp))
             Spacer(modifier = Modifier.padding(5.dp))
             Text(
-                text = "Firmware Version",
+                text = "Current Version",
                 modifier = Modifier.padding(start = 15.dp, top = 15.dp),
             )
+            Spacer(modifier = Modifier.padding(5.dp))
             Text(text = version, modifier = Modifier.padding(start = 20.dp))
+            Text(
+                text = "Latest Version",
+                modifier = Modifier.padding(start = 15.dp, top = 15.dp),
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+            Text(text = latest_version, modifier = Modifier.padding(start = 20.dp))
             Row(
                 verticalAlignment = Alignment.Bottom,
                 horizontalArrangement = Arrangement.SpaceBetween
