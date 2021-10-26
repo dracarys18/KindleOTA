@@ -45,7 +45,8 @@ fun HomeScreen(navhostController: NavController) {
                         KindleCards(
                             name = kindle.kindleName!!,
                             version = kindle.version!!,
-                            latest_version = latest.version
+                            latest_version = latest.version,
+                            download_uri = latest.dw_link
                         )
                     } else {
                         Toast.makeText(application, "Loading Please Wait", Toast.LENGTH_SHORT)

@@ -1,8 +1,11 @@
 package com.example.kindleota.ui
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.SecurityUpdate
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,12 +19,13 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @Composable
-fun KindleCards(name: String, version: String, latest_version: String) {
+fun KindleCards(name: String, version: String, latest_version: String, download_uri: String) {
     val application = LocalContext.current
     val dao = KindleDatabase.getInstance(application).kindledabaseDao
     var confirmpressed by remember {
         mutableStateOf(false)
     }
+    val uriintent = remember { Intent(Intent.ACTION_VIEW, Uri.parse(download_uri)) }
     if (confirmpressed) {
         AlertDialog(
             onDismissRequest = {
@@ -84,6 +88,19 @@ fun KindleCards(name: String, version: String, latest_version: String) {
                 verticalAlignment = Alignment.Bottom,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
+                if (version < latest_version) {
+                    IconButton(onClick = {
+                        application.startActivity(uriintent)
+                    }) {
+                        Spacer(modifier = Modifier.padding(bottom = 5.dp))
+                        Row {
+                            Icon(
+                                Icons.Filled.SecurityUpdate,
+                                contentDescription = "Update the Kindle"
+                            )
+                        }
+                    }
+                }
                 Spacer(modifier = Modifier.weight(1f, true))
                 IconButton(
                     onClick = { confirmpressed = true }
