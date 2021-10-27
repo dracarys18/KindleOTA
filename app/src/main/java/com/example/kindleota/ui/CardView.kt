@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.kindleota.database.KindleDatabase
 import kotlinx.coroutines.CoroutineScope
@@ -68,19 +69,24 @@ fun KindleCards(name: String, version: String, latest_version: String, download_
             Text(
                 text = "Kindle Name",
                 modifier = Modifier.padding(start = 15.dp, top = 15.dp),
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colors.primary
             )
             Spacer(modifier = Modifier.padding(5.dp))
             Text(text = name, modifier = Modifier.padding(start = 20.dp))
-            Spacer(modifier = Modifier.padding(5.dp))
             Text(
                 text = "Current Version",
                 modifier = Modifier.padding(start = 15.dp, top = 15.dp),
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colors.primary
             )
             Spacer(modifier = Modifier.padding(5.dp))
             Text(text = version, modifier = Modifier.padding(start = 20.dp))
             Text(
                 text = "Latest Version",
                 modifier = Modifier.padding(start = 15.dp, top = 15.dp),
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colors.primary
             )
             Spacer(modifier = Modifier.padding(5.dp))
             Text(text = latest_version, modifier = Modifier.padding(start = 20.dp))
